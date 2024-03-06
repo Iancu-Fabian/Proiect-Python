@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<style>
+    #socials {
+        display: none;
+    }
+</style>
+
+
+<div class="mt-5">
+    <h2 class="mb-4">Today</h2>
+    {% if habits_today %}
+    <form method="post" action="{{ url_for('views.submit_completion') }}">
+    <ul>
+        {% for habit in habits_today %}
+        <li>
+            {{ habit.habit_name }} : {{ habit.start_time.strftime('%H:%M') }} - {{ habit.end_time.strftime('%H:%M') }}     
+            <input class="form-check-input" id="flexCheckDefault" type="checkbox" name="habit_ids" value="{{ habit.id }}" style="margin-left:10px" {% if habit.completed %}checked{% endif %}>
+        </li>
+        
+        {% endfor %}
+    </ul>
+    <button type="submit" class="btn btn-primary">Submit Completion</button>
+    </form>
+    {% else %}
+    <p>No habits for today.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

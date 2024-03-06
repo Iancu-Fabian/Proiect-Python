@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block style %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="mt-5">
+    <h2 class="mb-4">Habit Tracker</h2>
+    <form method="post" action="{{ url_for('views.home') }}">
+        <div class="mb-3">
+            <label for="habitName" class="form-label">Habit Name</label>
+            <input type="text" class="form-control" name="habitName" id="habitName" placeholder="Enter habit name">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" name="category" id="category">
+                <option disabled selected value="">Select...</option>
+                <option value="work">Work</option>
+                <option value="health">Health</option>
+                <option value="leisure">Leisure</option>
+                <option value="custom">Custom</option>
+            </select>
+        </div>
+
+        <div class="mb-3" id="customCategoryInput" style="display:none;">
+            <label for="customCategory" class="form-label">Custom Category</label>
+            <input type="text" class="form-control" name="customCategory" id="customCategory"
+                placeholder="Enter custom category">
+        </div>
+        <div class="mb-3">
+            <label for="type" class="form-label">Type</label>
+            <select class="form-select" name="type" id="type">
+                <option disabled selected value="">Select...</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="ocasional">Ocasional</option>
+            </select>
+        </div>
+        <div class="mb-3" id="intervalInput" style="display:none;">
+            <label for= "time_interval" class="form-label">Time interval</label>
+            <input type="text" class="form-control" name="time_interval" id="time_interval">
+            <small id="intervalHelp" style="color:rgb(66, 68, 68)">eg: 10:35-11:00</small>
+        </div>
+
+        <div class="mb-3" id="dateTimeRangeInput" style="display:none;">
+            <label for="dateTimeRange" class="form-label">Select Date and Time</label>
+            <input type="text" class="form-control" id="dateTimeRange" name="dateTimeRange" data-input>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top:10px">Add Habit</button>
+    </form>
+</div>
+
+
+<script>
+    document.getElementById("category").addEventListener("change", function () {
+        var customCategoryInput = document.getElementById("customCategoryInput");
+        if (this.value === "custom") {
+            customCategoryInput.style.display = "block";
+        } else {
+            customCategoryInput.style.display = "none";
+        }
+    });
+
+    document.getElementById("type").addEventListener("change", function () {
+            var intervalInput = document.getElementById("intervalInput");
+            if (this.value === "daily") {
+                intervalInput.style.display = "block";
+            } else {
+                intervalInput.style.display = "none";
+            }
+        });
+
+       document.getElementById("type").addEventListener("change", function () {
+            var dateTimeRangeInput = document.getElementById("dateTimeRangeInput");
+
+            if (this.value === "weekly" || this.value === "ocasional") {
+                dateTimeRangeInput.style.display = "block";
+                flatpickr("#dateTimeRange", {
+                    enableTime: true,
+                    time_24hr: true,
+                    dateFormat: "Y-m-d H:i",
+                    enableSeconds: false,
+                    mode: "range",
+                });
+            } else {
+                dateTimeRangeInput.style.display = "none";
+            }
+        });
+
+</script>
+
+{% endblock %}
